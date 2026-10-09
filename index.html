@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>ポータル</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="icon-192.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="ポータル">
+  <meta name="theme-color" content="#0f172a">
+  <style>
+    html, body { margin: 0; height: 100%; background: #0f172a; }
+    iframe { position: fixed; inset: 0; width: 100%; height: 100%; border: 0; }
+    .fallback { position: fixed; right: 8px; bottom: 8px; z-index: 1; font: 12px sans-serif; }
+    .fallback a { color: #94a3b8; }
+  </style>
+</head>
+<body>
+  <!-- 923 User Portal の GAS デプロイ URL（/exec）。デプロイ URL を変えたらここも更新 -->
+  <iframe id="portal" src="https://script.google.com/macros/s/AKfycbwQb-7KIqzSEJkRjPJsBlClRECldtWgj1lzOXzQ84VsDlegUgoe4UvPrWH4CnvdK6J5vA/exec" allow="clipboard-write" title="ポータル"></iframe>
+  <div class="fallback"><a id="direct" href="#">開けない場合はこちら</a></div>
+  <script>
+    document.getElementById('direct').href = document.getElementById('portal').src;
+  </script>
+</body>
+</html>
