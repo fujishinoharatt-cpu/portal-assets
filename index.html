@@ -23,7 +23,21 @@
   <iframe id="portal" src="https://script.google.com/macros/s/AKfycbwQb-7KIqzSEJkRjPJsBlClRECldtWgj1lzOXzQ84VsDlegUgoe4UvPrWH4CnvdK6J5vA/exec" allow="clipboard-write" title="ポータル"></iframe>
   <div class="fallback"><a id="direct" href="#">開けない場合はこちら</a></div>
   <script>
-    document.getElementById('direct').href = document.getElementById('portal').src;
+    /* ?u=<GAS の URL> が付いていれば、そのアプリを表示する（script.google.com の https のみ許可。それ以外は無視してポータルを表示） */
+    (function () {
+      var frame = document.getElementById('portal');
+      try {
+        var u = new URLSearchParams(location.search).get('u');
+        if (u) {
+          var parsed = new URL(u);
+          if (parsed.protocol === 'https:' && parsed.hostname === 'script.google.com') {
+            frame.src = parsed.href;
+            document.title = 'アプリ';
+          }
+        }
+      } catch (e) {}
+      document.getElementById('direct').href = frame.src;
+    })();
   </script>
 </body>
 </html>
