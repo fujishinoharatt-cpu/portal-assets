@@ -23,12 +23,17 @@
   <!-- このファイルは公開されるため、GAS の URL は書かない。URL はホーム画面に追加するリンク（?p=<URL>）で渡し、ブラウザに記憶する -->
   <iframe id="portal" allow="clipboard-write" title="ポータル" hidden></iframe>
   <div class="fallback"><a id="direct" href="#" hidden>開けない場合はこちら</a></div>
+  <p id="wait" hidden style="color:#94a3b8;font:16px sans-serif;text-align:center;margin-top:40vh">⌛ アプリを開いています…</p>
   <p id="msg" hidden style="color:#94a3b8;font:14px sans-serif;text-align:center;margin-top:40vh">管理者から受け取った専用リンクから開いてください</p>
   <script>
     /* #u=<GAS の URL> … そのアプリを表示（記憶しない）。#p=<GAS の URL> … ポータルとして表示し、このブラウザに記憶。
        どちらも無ければ、記憶したポータルを表示。script.google.com の https のみ許可 */
     (function () {
       var KEY = 'portal_exec_url';
+      /* #wait: ポータルのボタンから開いた直後の待機画面。通行証が届くと、ポータルがこのタブを #u=... に切り替える（切り替わったら読み直す） */
+      window.addEventListener('hashchange', function () { location.reload(); });
+      if (location.hash === '#wait') { document.getElementById('wait').hidden = false; return; }
+
       function ok(s) {
         try { var p = new URL(s); return p.protocol === 'https:' && p.hostname === 'script.google.com' ? p.href : ''; } catch (e) { return ''; }
       }
