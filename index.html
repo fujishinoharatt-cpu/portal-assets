@@ -25,19 +25,22 @@
   <div class="fallback"><a id="direct" href="#" hidden>開けない場合はこちら</a></div>
   <p id="msg" hidden style="color:#94a3b8;font:14px sans-serif;text-align:center;margin-top:40vh">管理者から受け取った専用リンクから開いてください</p>
   <script>
-    /* ?u=<GAS の URL> … そのアプリを表示（記憶しない）。?p=<GAS の URL> … ポータルとして表示し、このブラウザに記憶。
+    /* #u=<GAS の URL> … そのアプリを表示（記憶しない）。#p=<GAS の URL> … ポータルとして表示し、このブラウザに記憶。
        どちらも無ければ、記憶したポータルを表示。script.google.com の https のみ許可 */
     (function () {
       var KEY = 'portal_exec_url';
       function ok(s) {
         try { var p = new URL(s); return p.protocol === 'https:' && p.hostname === 'script.google.com' ? p.href : ''; } catch (e) { return ''; }
       }
+      /* # 以降はブラウザの外（GitHub のサーバー）に送られないので、URL は #u= / #p= で渡す。互換のため ?u= / ?p= も読む */
+      var h = new URLSearchParams(location.hash.replace(/^#/, ''));
       var q = new URLSearchParams(location.search);
-      var target = ok(q.get('u'));
+      function param(k) { return h.get(k) || q.get(k); }
+      var target = ok(param('u'));
       if (target) {
         document.title = 'アプリ';
       } else {
-        target = ok(q.get('p'));
+        target = ok(param('p'));
         try {
           if (target) { localStorage.setItem(KEY, target); history.replaceState(null, '', location.pathname); }
           else target = ok(localStorage.getItem(KEY));
